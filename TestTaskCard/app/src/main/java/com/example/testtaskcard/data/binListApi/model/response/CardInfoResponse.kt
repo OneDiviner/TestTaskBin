@@ -24,5 +24,14 @@ data class CardInfoResponse(
             country = Country.EMPTY,
             bank = Bank.EMPTY
         )
+        val TEST = CardInfoResponse(
+            number = CardNumber.TEST,
+            scheme = "mir",
+            type = "credit",
+            brand = "Premium",
+            isPrepaid = false,
+            country = Country.TEST,
+            bank = Bank.TEST
+        )
     }
 }

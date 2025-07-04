@@ -21,5 +21,14 @@ data class Country(
             latitude = null,
             longitude = null
         )
+        val TEST = Country(
+            numericCode = "643",
+            alpha2Code = "RU",
+            name = "Russian Federation",
+            emoji = "\uD83C\uDDF7\uD83C\uDDFA",
+            currency = "RUB",
+            latitude = 60.0,
+            longitude = 100.0
+        )
     }
 }

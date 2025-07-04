@@ -11,5 +11,9 @@ data class CardNumber(
             length = null,
             isLuhnValid = null
         )
+        val TEST = CardNumber(
+            length = 16,
+            isLuhnValid = true
+        )
     }
 }

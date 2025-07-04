@@ -16,11 +16,17 @@ class AppViewModel @Inject constructor(
     private val binListRepository: BinListRepository
 ) : ViewModel() {
 
+    var appState by mutableStateOf<AppState>(AppState.CardInfo)
+
     var cardInfo by mutableStateOf<CardInfoResponse>(CardInfoResponse.EMPTY)
+
+    var textFieldValue by mutableStateOf("")
 
     init {
 
     }
+
+
 
     fun fetchCardInfoBin(bin: String) {
         viewModelScope.launch {

@@ -15,5 +15,11 @@ data class Bank(
             phone = null,
             city = null
         )
+        val TEST = Bank(
+            name = "Tinkoff Bank",
+            website = "https://www.tbank.ru/",
+            phone = "+78003333333",
+            city = "Moscow"
+        )
     }
 }
