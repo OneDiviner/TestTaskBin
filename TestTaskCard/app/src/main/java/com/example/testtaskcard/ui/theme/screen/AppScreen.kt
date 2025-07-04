@@ -27,7 +27,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.testtaskcard.ui.theme.screen.component.BinInput
 
 @Composable
 fun AppScreen(
@@ -107,6 +106,12 @@ fun AppScreen(
                 Text(
                     modifier = Modifier,
                     text = viewModel.cardInfo.bank?.phone ?: "Phone",
+                    fontSize = 24.sp,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+                Text(
+                    modifier = Modifier,
+                    text = viewModel.cardInfo.bank?.website ?: "Website",
                     fontSize = 24.sp,
                     color = MaterialTheme.colorScheme.onBackground
                 )
