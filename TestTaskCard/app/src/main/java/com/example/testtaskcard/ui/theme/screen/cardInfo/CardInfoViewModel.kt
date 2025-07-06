@@ -16,25 +16,32 @@ class CardInfoViewModel @Inject constructor(
     private val binListRepository: BinListRepository
 ) : ViewModel() {
 
-    val testData by mutableStateOf<CardInfoResponse>(CardInfoResponse.TEST)
+    var cardInfo by mutableStateOf<CardInfoResponse>(CardInfoResponse.TEST)
+        private set
 
-    var cardInfo by mutableStateOf<CardInfoResponse>(CardInfoResponse.EMPTY)
+    var isLoading by mutableStateOf(false)
+        private set
 
     var textFieldValue by mutableStateOf("")
         private set
-
     fun onTextFieldChanged(value: String) {
         textFieldValue = value
     }
 
-    fun fetchCardInfoBin(bin: String) {
+    fun validateField() {
+
+    }
+
+    fun fetchCardInfoBin() {
+        isLoading = true
         viewModelScope.launch {
-            val cardInfoResult = binListRepository.getCardInfoByBin(bin)
+            val cardInfoResult = binListRepository.getCardInfoByBin(textFieldValue)
             cardInfoResult.onSuccess { card ->
                 cardInfo = card
             }.onFailure {
                 cardInfo = CardInfoResponse.EMPTY
             }
+            isLoading = false
         }
     }
 
