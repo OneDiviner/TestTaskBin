@@ -62,9 +62,6 @@ dependencies {
     //Navigation
     implementation(libs.androidx.navigation.compose)
 
-    //NavAnimations
-    implementation (libs.accompanist.navigation.animation)
-
     //Coroutines
     implementation(libs.kotlinx.coroutines.core)
 

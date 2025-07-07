@@ -1,10 +1,9 @@
 package com.example.testtaskcard.ui.theme.screen.cardInfo
 
+import com.example.testtaskcard.R
 import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -17,24 +16,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.focusModifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -67,7 +62,8 @@ fun RowItem(
 @Composable
 fun CardInfoScreen(
     viewModel: CardInfoViewModel = hiltViewModel(),
-    paddingValues: PaddingValues? = null
+    paddingValues: PaddingValues? = null,
+    onHistoryButtonClick: () -> Unit? = {}
 ) {
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current
@@ -83,7 +79,8 @@ fun CardInfoScreen(
                     onValueChange = { viewModel.onTextFieldChanged(it) },
                     colors = TextFieldDefaults.colors(
                         focusedIndicatorColor = Color.Transparent,
-                        unfocusedIndicatorColor = Color.Transparent
+                        unfocusedIndicatorColor = Color.Transparent,
+                        errorIndicatorColor = Color.Transparent
                     ),
                     label = {
                         Text("BIN")
@@ -96,23 +93,22 @@ fun CardInfoScreen(
                     keyboardActions = KeyboardActions(
                         onDone = {
                             focusManager.clearFocus()
-                            viewModel.fetchCardInfoBin()
                         }
                     ),
                     trailingIcon = {
                         if (viewModel.isLoading) {CircularProgressIndicator(modifier = Modifier.size(25.dp), strokeWidth = 2.dp)} else {null}
                     },
-                    isError = false,
+                    isError = viewModel.isError,
                     supportingText = {
                         Text("Enter the first 6 to 8 digits of a card number (BIN/IIN)")
                     }
                 )
                 IconButton(
-                    onClick = {}
+                    onClick = { onHistoryButtonClick() }
                 ) {
                     Icon(
                         modifier = Modifier.size(30.dp),
-                        imageVector = Icons.Default.DateRange,
+                        painter = painterResource(R.drawable.baseline_history_24),
                         contentDescription = "History"
                     )
                 }
@@ -121,7 +117,7 @@ fun CardInfoScreen(
             Button(
                 modifier = Modifier.fillMaxWidth().height(56.dp).padding(top = 10.dp),
                 onClick = {
-
+                    viewModel.fetchCardInfoBin()
                 },
                 enabled = !viewModel.isLoading && !viewModel.textFieldValue.isBlank(),
                 shape = RoundedCornerShape(18.dp)

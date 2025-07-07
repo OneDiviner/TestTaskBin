@@ -22,27 +22,37 @@ class CardInfoViewModel @Inject constructor(
     var isLoading by mutableStateOf(false)
         private set
 
+    var isError by mutableStateOf(false)
+        private set
+
     var textFieldValue by mutableStateOf("")
         private set
     fun onTextFieldChanged(value: String) {
         textFieldValue = value
     }
 
-    fun validateField() {
-
+    fun validateField(bin: String) : Boolean {
+        return bin.length == 6 || bin.length == 8
     }
 
     fun fetchCardInfoBin() {
         isLoading = true
-        viewModelScope.launch {
-            val cardInfoResult = binListRepository.getCardInfoByBin(textFieldValue)
-            cardInfoResult.onSuccess { card ->
-                cardInfo = card
-            }.onFailure {
-                cardInfo = CardInfoResponse.EMPTY
+        if (validateField(textFieldValue)) {
+            isError = false
+            viewModelScope.launch {
+                val cardInfoResult = binListRepository.getCardInfoByBin(textFieldValue)
+                cardInfoResult.onSuccess { card ->
+                    cardInfo = card
+                }.onFailure {
+                    cardInfo = CardInfoResponse.EMPTY
+                }
+                isLoading = false
             }
+        } else {
+            isError = true
             isLoading = false
         }
+
     }
 
 }
