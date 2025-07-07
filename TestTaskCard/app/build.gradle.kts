@@ -42,10 +42,15 @@ android {
 }
 
 dependencies {
+    //Room
+    implementation("androidx.room:room-runtime:2.7.2")
+    kapt("androidx.room:room-compiler:2.7.2")
+    implementation("androidx.room:room-ktx:2.7.2")
 
     //Hilt
     implementation (libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
     kapt(libs.hilt.android.compiler)
 
     //Retrofit

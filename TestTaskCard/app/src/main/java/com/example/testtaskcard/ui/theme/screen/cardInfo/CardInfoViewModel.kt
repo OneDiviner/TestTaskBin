@@ -7,13 +7,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.testtaskcard.data.binListApi.model.response.CardInfoResponse
 import com.example.testtaskcard.data.binListApi.repository.BinListRepository
+import com.example.testtaskcard.data.dataBase.entity.CardInfoEntity
+import com.example.testtaskcard.data.dataBase.repository.CardInfoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CardInfoViewModel @Inject constructor(
-    private val binListRepository: BinListRepository
+    private val binListRepository: BinListRepository,
+    private val cardInfoRepository: CardInfoRepository
 ) : ViewModel() {
 
     var cardInfo by mutableStateOf<CardInfoResponse>(CardInfoResponse.TEST)
@@ -43,6 +46,21 @@ class CardInfoViewModel @Inject constructor(
                 val cardInfoResult = binListRepository.getCardInfoByBin(textFieldValue)
                 cardInfoResult.onSuccess { card ->
                     cardInfo = card
+                    cardInfoRepository.insertCardInfo(
+                        CardInfoEntity(
+                            scheme = card.scheme,
+                            type = card.type,
+                            brand = card.brand,
+                            prepaid = card.isPrepaid,
+                            countryName = card.country?.name,
+                            countryEmoji = card.country?.emoji,
+                            latitude = card.country?.latitude,
+                            longitude = card.country?.longitude,
+                            length = card.number?.length,
+                            luhn = card.number?.isLuhnValid,
+                            bin = textFieldValue
+                        )
+                    )
                 }.onFailure {
                     cardInfo = CardInfoResponse.EMPTY
                 }
