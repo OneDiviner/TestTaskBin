@@ -11,7 +11,6 @@ class BinListRepository @Inject constructor(
     override suspend fun getCardInfoByBin(bin: String): Result<CardInfoResponse> {
         return try {
             val cardInfoResponse = binListApiService.getCardInfoByBin(bin = bin)
-            Log.d("BinListRepository", "getCardInfoByBin: ${cardInfoResponse.body()}")
             Result.success(cardInfoResponse.body() ?: CardInfoResponse.EMPTY)
         } catch (e: Exception) {
             Result.failure(e)

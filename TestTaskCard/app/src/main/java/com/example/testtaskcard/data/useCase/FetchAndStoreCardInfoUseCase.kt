@@ -12,9 +12,7 @@ class FetchAndStoreCardInfoUseCase @Inject constructor(
     suspend operator fun invoke(bin: String) : CardInfoResponse {
         val fetchResult = fetchCardInfoUseCase(bin)
         fetchResult.onSuccess { cardInfo ->
-            Log.d("FetchAndStoreCardInfoUseCase", "invoke: $cardInfo")
             if (cardInfo != CardInfoResponse.EMPTY) {
-                Log.d("FetchAndStoreCardInfoUseCase", "Card is EMPTY")
                 insertCardInfoIntoHistoryUseCase(cardInfo, bin)
                 return cardInfo
             }
