@@ -36,28 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.core.net.toUri
-
-@Composable
-fun RowItem(
-    modifier: Modifier = Modifier,
-    title: String,
-    text: String
-) {
-    Column(
-        modifier = modifier
-    ) {
-        Text(
-            text = title,
-            fontSize = 18.sp,
-            color = MaterialTheme.colorScheme.onBackground.copy(0.8f)
-        )
-        Text(
-            text = text,
-            fontSize = 20.sp,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-    }
-}
+import com.example.testtaskcard.ui.theme.screen.component.RowItem
 
 @Composable
 fun CardInfoScreen(

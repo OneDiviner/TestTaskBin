@@ -18,7 +18,6 @@ import com.example.testtaskcard.ui.theme.screen.history.HistoryScreen
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun AppScreen(
-    viewModel: AppViewModel = hiltViewModel()
 ) {
 
     val navController = rememberNavController()

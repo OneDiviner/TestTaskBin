@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.testtaskcard.data.binListApi.model.response.CardInfoResponse
 import com.example.testtaskcard.data.dataBase.entity.CardInfoEntity
 import com.example.testtaskcard.data.dataBase.repository.CardInfoRepository
+import com.example.testtaskcard.data.useCase.GetCardInfoFlowListFromTableUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,15 +18,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HistoryViewModel @Inject constructor(
-    private val cardInfoRepository: CardInfoRepository
+    private val getCardInfoFlowListFromTableUseCase: GetCardInfoFlowListFromTableUseCase
 ) : ViewModel() {
-
-
-
     private val _cardInfoFlow = MutableStateFlow<List<CardInfoEntity>>(emptyList())
     val cardInfoFlow: StateFlow<List<CardInfoEntity>> = _cardInfoFlow.asStateFlow()
-
-
 
     init {
         collectInfoCard()
@@ -33,7 +29,7 @@ class HistoryViewModel @Inject constructor(
 
     fun collectInfoCard() {
         viewModelScope.launch {
-            cardInfoRepository.getAllCardInfo().collect {
+            getCardInfoFlowListFromTableUseCase().collect {
                 _cardInfoFlow.value = it
             }
         }

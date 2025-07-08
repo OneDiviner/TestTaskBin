@@ -9,14 +9,14 @@ import com.example.testtaskcard.data.binListApi.model.response.CardInfoResponse
 import com.example.testtaskcard.data.binListApi.repository.BinListRepository
 import com.example.testtaskcard.data.dataBase.entity.CardInfoEntity
 import com.example.testtaskcard.data.dataBase.repository.CardInfoRepository
+import com.example.testtaskcard.data.useCase.FetchAndStoreCardInfoUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CardInfoViewModel @Inject constructor(
-    private val binListRepository: BinListRepository,
-    private val cardInfoRepository: CardInfoRepository
+    private val fetchAndStoreCardInfoUseCase: FetchAndStoreCardInfoUseCase
 ) : ViewModel() {
 
     var cardInfo by mutableStateOf<CardInfoResponse>(CardInfoResponse.TEST)
@@ -43,27 +43,7 @@ class CardInfoViewModel @Inject constructor(
         if (validateField(textFieldValue)) {
             isError = false
             viewModelScope.launch {
-                val cardInfoResult = binListRepository.getCardInfoByBin(textFieldValue)
-                cardInfoResult.onSuccess { card ->
-                    cardInfo = card
-                    cardInfoRepository.insertCardInfo(
-                        CardInfoEntity(
-                            scheme = card.scheme,
-                            type = card.type,
-                            brand = card.brand,
-                            prepaid = card.isPrepaid,
-                            countryName = card.country?.name,
-                            countryEmoji = card.country?.emoji,
-                            latitude = card.country?.latitude,
-                            longitude = card.country?.longitude,
-                            length = card.number?.length,
-                            luhn = card.number?.isLuhnValid,
-                            bin = textFieldValue
-                        )
-                    )
-                }.onFailure {
-                    cardInfo = CardInfoResponse.EMPTY
-                }
+                cardInfo = fetchAndStoreCardInfoUseCase(textFieldValue)
                 isLoading = false
             }
         } else {

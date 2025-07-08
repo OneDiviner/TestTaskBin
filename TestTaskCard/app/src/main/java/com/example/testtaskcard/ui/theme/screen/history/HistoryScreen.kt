@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Card
@@ -53,17 +54,35 @@ fun HistoryScreen(
             }
         }
         items(cardInfoList) { card ->
-            Card(
-                modifier = Modifier.fillMaxWidth()
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
-                Column(
-                    modifier = Modifier.padding(15.dp)
+                SelectionContainer {
+                    Text(
+                        text = "BIN: ${card.bin}",
+                        fontSize = 20.sp
+                    )
+                }
+                Card(
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(text = "BIN: ${card.bin}")
-                    Text(text = "Scheme: ${card.scheme}")
-                    Text(text = "Type: ${card.type}")
-                    Text(text = "Brand: ${card.brand}")
-                    Text(text = "Prepaid: ${card.prepaid}")
+                    Column(
+                        modifier = Modifier.padding(15.dp)
+                    ) {
+                        Text(
+                            text = card.scheme ?: "-",
+                            fontSize = 28.sp
+                        )
+                        Text(text = "Type: ${card.type ?: "-"}")
+                        Text(text = "Brand: ${card.brand ?: "-"}")
+                        Text(text = "Prepaid: ${card.prepaid ?: "-"}")
+                        Text(text = "Length: ${card.length ?: "-"}")
+                        Text(text = "Luhn: ${card.luhn ?: "-"}")
+                        Text(text = "${card.countryEmoji ?: "-"} ${card.countryName ?: "-"}")
+                        Text(text = "Latitude: ${card.latitude ?: "-"}")
+                        Text(text = "Longitude: ${card.longitude ?: "-"}")
+                    }
                 }
             }
         }
