@@ -1,8 +1,8 @@
 package com.example.testtaskcard.data.useCase
 
+import android.util.Log
 import com.example.testtaskcard.data.binListApi.model.response.CardInfoResponse
-import com.example.testtaskcard.data.dataBase.entity.CardInfoEntity
-import kotlinx.coroutines.flow.Flow
+
 import javax.inject.Inject
 
 class FetchAndStoreCardInfoUseCase @Inject constructor(
@@ -12,8 +12,12 @@ class FetchAndStoreCardInfoUseCase @Inject constructor(
     suspend operator fun invoke(bin: String) : CardInfoResponse {
         val fetchResult = fetchCardInfoUseCase(bin)
         fetchResult.onSuccess { cardInfo ->
-            insertCardInfoIntoHistoryUseCase(cardInfo, bin)
-            return cardInfo
+            Log.d("FetchAndStoreCardInfoUseCase", "invoke: $cardInfo")
+            if (cardInfo != CardInfoResponse.EMPTY) {
+                Log.d("FetchAndStoreCardInfoUseCase", "Card is EMPTY")
+                insertCardInfoIntoHistoryUseCase(cardInfo, bin)
+                return cardInfo
+            }
         }
         return CardInfoResponse.EMPTY
     }
